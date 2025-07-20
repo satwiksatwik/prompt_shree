@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📂 Saved Prompts - Prompt-Shree</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .search-box {
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    .copy-btn {
+      margin: 5px 5px 10px 0;
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      background-color: #f4c542;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .copy-btn:hover {
+      background-color: #e0b235;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📂 Saved Prompts</h2>
+
+    <input type="text" id="searchBox" class="search-box" placeholder="🔍 Search by keyword..." onkeyup="filterPrompts()">
+
+    <div id="savedList"></div>
+    <br />
+    <button onclick="downloadJSON()">📄 Export as JSON</button>
+    <button onclick="clearSaved()">🗑 Clear All Saved</button>
+    <a href="index.html" class="guide-toggle">⬅ Back to Main</a>
+  </div>
+
+  <script>
+    const savedList = document.getElementById("savedList");
+    const searchBox = document.getElementById("searchBox");
+
+    let saved = JSON.parse(localStorage.getItem("savedPrompts") || "[]");
+
+    function renderPrompts(data) {
+      savedList.innerHTML = "";
+
+      if (data.length === 0) {
+        savedList.innerHTML = "<p>No saved prompts found.</p>";
+        return;
+      }
+
+      data.forEach((entry, index) => {
+        const item = document.createElement("div");
+        item.style.marginBottom = "25px";
+        item.innerHTML = `
+          <strong>Prompt ${index + 1} (Saved: ${new Date(entry.timestamp).toLocaleString()}):</strong>
+          ${entry.tag ? `<em>[Tag: ${entry.tag}]</em><br/>` : ""}
+          <pre style="white-space: pre-wrap; background: #f9f9f9; padding: 10px; border-radius: 6px;">${entry.prompt}</pre>
+          <button class="copy-btn" onclick="copyText(\`${entry.prompt.replace(/`/g, '\\`')}\`)">📋 Copy Prompt</button>
+
+          <strong>Output:</strong>
+          <pre style="white-space: pre-wrap; background: #e6f7ff; padding: 10px; border-radius: 6px;">${entry.output}</pre>
+          <button class="copy-btn" onclick="copyText(\`${entry.output.replace(/`/g, '\\`')}\`)">📋 Copy Output</button>
+          <hr>
+        `;
+        savedList.appendChild(item);
+      });
+    }
+
+    function filterPrompts() {
+      const keyword = searchBox.value.toLowerCase();
+      const filtered = saved.filter(entry =>
+        entry.prompt.toLowerCase().includes(keyword) || entry.output.toLowerCase().includes(keyword)
+      );
+      renderPrompts(filtered);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert("Copied to clipboard ✅");
+    }
+
+    function clearSaved() {
+      if (confirm("Are you sure you want to delete all saved prompts?")) {
+        localStorage.removeItem("savedPrompts");
+        saved = [];
+        renderPrompts([]);
+      }
+    }
+
+    function downloadJSON() {
+      const blob = new Blob([JSON.stringify(saved, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "saved_prompts.json";
+      link.click();
+    }
+
+    // Initial load
+    renderPrompts(saved);
+  </script>
+</body>
+</html>

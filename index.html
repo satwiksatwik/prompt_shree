@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prompt-Shree</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🔮 Prompt-Shree</h1>
+
+    <textarea id="prompt" placeholder="Enter your prompt here..."></textarea><br />
+
+    <select id="model">
+      <option value="gpt-3.5-turbo">GPT-3.5</option>
+      <option value="gpt-4">GPT-4</option>
+    </select>
+
+    <input type="number" id="temperature" value="0.7" step="0.1" min="0" max="1" /><br />
+
+    <button onclick="generateResponse()">⚡ Generate</button>
+    <button onclick="optimizePrompt()">🛠 Optimize Prompt</button>
+    <button onclick="savePrompt()">💾 Save</button>
+    <button onclick="clearFields()">🗑 Clear</button>
+
+    <div id="loader" style="display:none;">⏳ Loading...</div><br /><br />
+
+    <div id="generated-output-box" style="display: none;">
+      <label for="output">📤 Generated Output:</label>
+      <textarea id="output" placeholder="Response will appear here..."></textarea>
+    </div><br />
+
+    <div id="optimized-output-box" style="display: none;">
+      <label for="optimizedPromptOutput">🛠 Optimized Prompt:</label>
+      <textarea id="optimizedPromptOutput" placeholder="Improved prompt will appear here..."></textarea>
+    </div><br />
+
+    <a href="userguide.html" class="guide-toggle">📘 User Guide & Sample Prompt</a>
+    <a href="saved.html" class="guide-toggle">📂 View Saved Prompts</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

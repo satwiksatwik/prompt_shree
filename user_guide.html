@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📘 User Guide - Prompt‑Shree</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .collapsible {
+      background-color: #f4c542;
+      color: #000;
+      cursor: pointer;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1rem;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    .active, .collapsible:hover {
+      background-color: #e0b235;
+    }
+    .content {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      background-color: #fdfaf6;
+      border-left: 4px solid #f4c542;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 10px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      background: #007b7f;
+      color: white;
+      border-radius: 6px;
+      margin: 5px 5px 10px 0;
+      cursor: pointer;
+    }
+    .sample-box {
+      background: #e6f7ff;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 6px;
+    }
+    .try-button {
+      background: #f4c542;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📘 How to Use Prompt‑Shree</h1>
+    <p>Prompt‑Shree helps you build effective prompts and instantly get results from ChatGPT with one click.</p>
+
+    <!-- Step-by-step instructions -->
+    <button class="collapsible">🪜 Step-by-Step Instructions</button>
+    <div class="content">
+      <ol>
+        <li>Enter your prompt in the text area.</li>
+        <li>Select the GPT model (GPT-3.5 or GPT-4).</li>
+        <li>Adjust the creativity level using the Temperature slider.</li>
+        <li>Click <strong>Generate</strong> to get the output.</li>
+        <li>Click <strong>Optimize</strong> to improve your prompt.</li>
+        <li>Click <strong>Save</strong> to keep your experiment.</li>
+      </ol>
+    </div>
+
+    <!-- Best practices -->
+    <button class="collapsible">💡 Prompt Writing Tips</button>
+    <div class="content">
+      <ul>
+        <li>Be specific: "Write a poem about sunrise in Haiku style" is better than "Write a poem."</li>
+        <li>Use roles: "Act as a career coach and suggest..."</li>
+        <li>Limit scope: "Summarize this in 3 key points."</li>
+        <li>Iterate: Use the Optimize button to refine.</li>
+      </ul>
+    </div>
+
+    <!-- Sample Prompts with Tags -->
+    <h3>🎯 Sample Prompts</h3>
+
+    <div class="tag" onclick="showSamples('coding')">👨‍💻 Coding</div>
+    <div class="tag" onclick="showSamples('content')">✍️ Content</div>
+    <div class="tag" onclick="showSamples('chatbot')">🤖 Chatbot</div>
+    <div class="tag" onclick="showSamples('fun')">🎉 Fun</div>
+
+    <div id="samplePrompts"></div>
+
+    <br />
+    <a href="index.html" class="guide-toggle">⬅ Back to Main</a>
+  </div>
+
+  <script>
+    const samples = {
+      coding: [
+        "Write a Python function to sort a list of dictionaries by a key.",
+        "Explain the concept of closures in JavaScript with examples.",
+        "Generate a REST API using Flask to manage a todo list."
+      ],
+      content: [
+        "Write a LinkedIn post announcing a job switch to a new company.",
+        "Generate a 30-second product pitch for a smart notebook.",
+        "Draft an engaging Instagram caption for a travel photo."
+      ],
+      chatbot: [
+        "Act as a support agent and answer FAQs about subscription plans.",
+        "Simulate a booking assistant helping someone book movie tickets.",
+        "Roleplay a study buddy helping explain calculus."
+      ],
+      fun: [
+        "Tell me a pun involving coffee and coding.",
+        "Generate a funny horoscope for today.",
+        "Write a poem from the perspective of a confused AI."
+      ]
+    };
+
+    function showSamples(tag) {
+      const container = document.getElementById("samplePrompts");
+      container.innerHTML = "";
+
+      samples[tag].forEach(text => {
+        const box = document.createElement("div");
+        box.className = "sample-box";
+        box.innerHTML = `
+          <strong>💬 Prompt:</strong><br>${text}
+          <br>
+          <button class="try-button" onclick="redirectWithPrompt(\`${text.replace(/`/g, '\\`')}\`)">⚡ Try it Now</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function redirectWithPrompt(promptText) {
+      const encoded = encodeURIComponent(promptText);
+      window.location.href = `index.html?prefill=${encoded}`;
+    }
+
+    // Collapsible logic
+    const coll = document.getElementsByClassName("collapsible");
+    for (let i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        const content = this.nextElementSibling;
+        content.style.display = content.style.display === "block" ? "none" : "block";
+      });
+    }
+  </script>
+</body>
+</html>
